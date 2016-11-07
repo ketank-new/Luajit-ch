@@ -25,6 +25,7 @@
 #define LUAJIT_ARCH_ppcspe	5
 #define LUAJIT_ARCH_MIPS	6
 #define LUAJIT_ARCH_mips	6
+#define LUAJIT_ARCH_S390	7
 
 /* Target OS. */
 #define LUAJIT_OS_OTHER		0
@@ -51,6 +52,8 @@
 #endif
 #elif defined(__mips__) || defined(__mips) || defined(__MIPS__) || defined(__MIPS)
 #define LUAJIT_TARGET	LUAJIT_ARCH_MIPS
+#elif defined(__s390__) || defined(__s390) || defined(__S390__) || defined(__S390) || defined(S390)
+#define LUAJIT_TARGET	LUAJIT_ARCH_S390
 #else
 #error "No support for this architecture (yet)"
 #endif
@@ -200,6 +203,26 @@
 #define LJ_ARCH_VERSION		50
 #endif
 
+#elif LUAJIT_TARGET == LUAJIT_ARCH_S390
+
+#define LJ_ARCH_NAME		"s390"
+#define LJ_ARCH_BITS		64
+#define LJ_ARCH_ENDIAN		LUAJIT_BE
+#if !defined(LJ_ARCH_HASFPU) && __SOFTFP__
+#define LJ_ARCH_HASFPU		0
+#endif
+#if !defined(LJ_ABI_SOFTFP) && !__ARM_PCS_VFP
+#define LJ_ABI_SOFTFP		1
+#endif
+#define LJ_ABI_EABI		1
+#define LJ_TARGET_S390		1
+#define LJ_TARGET_EHRETREG	0
+#define LJ_TARGET_JUMPRANGE	25	/* +-2^25 = +-32MB */
+#define LJ_TARGET_MASKSHIFT	0
+#define LJ_TARGET_MASKROT	1
+#define LJ_TARGET_UNIFYROT	2	/* Want only IR_BROR. */
+#define LJ_ARCH_NUMMODE		LJ_NUMMODE_DUAL
+
 #elif LUAJIT_TARGET == LUAJIT_ARCH_PPC
 
 #define LJ_ARCH_NAME		"ppc"
@@ -309,6 +332,10 @@
 #error "Need at least GCC 4.0 or newer"
 #endif
 #elif LJ_TARGET_ARM
+#if (__GNUC__ < 4) || ((__GNUC__ == 4) && __GNUC_MINOR__ < 2)
+#error "Need at least GCC 4.2 or newer"
+#endif
+#elif LJ_TARGET_S390
 #if (__GNUC__ < 4) || ((__GNUC__ == 4) && __GNUC_MINOR__ < 2)
 #error "Need at least GCC 4.2 or newer"
 #endif
