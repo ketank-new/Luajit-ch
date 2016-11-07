@@ -241,6 +241,9 @@ ifneq (,$(findstring LJ_TARGET_ARM ,$(TARGET_TESTARCH)))
 else
 ifneq (,$(findstring LJ_TARGET_PPC ,$(TARGET_TESTARCH)))
   TARGET_LJARCH= ppc
+ else
+ifneq (,$(findstring LJ_TARGET_S390 ,$(TARGET_TESTARCH)))
+  TARGET_LJARCH= s390
 else
 ifneq (,$(findstring LJ_TARGET_PPCSPE ,$(TARGET_TESTARCH)))
   TARGET_LJARCH= ppcspe
