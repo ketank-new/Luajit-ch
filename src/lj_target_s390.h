@@ -1,22 +1,21 @@
 /*
-** Definitions for ARM CPUs.
+** Definitions for S390 CPUs.
 ** Copyright (C) 2005-2016 Mike Pall. See Copyright Notice in luajit.h
 */
 
-#ifndef _LJ_TARGET_ARM_H
-#define _LJ_TARGET_ARM_H
+#ifndef _LJ_TARGET_S390_H
+#define _LJ_TARGET_S390_H
 
 /* -- Registers IDs ------------------------------------------------------- */
 
 #define GPRDEF(_) \
   _(R0) _(R1) _(R2) _(R3) _(R4) _(R5) _(R6) _(R7) \
-  _(R8) _(R9) _(R10) _(R11) _(R12) _(SP) _(LR) _(PC)
+  _(R8) _(R9) _(R10) _(R11) _(R12) _(R13) _(R14) _(15) \
 #if LJ_SOFTFP
 #define FPRDEF(_)
 #else
 #define FPRDEF(_) \
-  _(D0) _(D1) _(D2) _(D3) _(D4) _(D5) _(D6) _(D7) \
-  _(D8) _(D9) _(D10) _(D11) _(D12) _(D13) _(D14) _(D15)
+  _(F0) _(F2) _(F4) _(F6)
 #endif
 #define VRIDDEF(_)
 
